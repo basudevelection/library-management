@@ -1,0 +1,8 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Issue/Return</title><script src="https://cdn.tailwindcss.com"></script><script type="module" src="./js/auth.js"></script><script type="module" src="./js/transactions.js"></script><script type="module">
+import { requireAuth } from './js/auth.js'
+import { issueBook, returnBook, getTransactions } from './js/transactions.js'
+await requireAuth()
+async function load(){ const tx=await getTransactions(); const tbody=document.getElementById('tx'); tbody.innerHTML=''; tx.data.forEach(t=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td class="p-3">${t.books.title}</td><td class="p-3">${t.members.full_name}</td><td class="p-3">${t.issue_date}</td><td class="p-3">${t.due_date}</td><td class="p-3">${t.status==='issued'?'<button onclick="ret(\''+t.id+'\')" class="bg-red-500 text-white px-3 py-1 rounded">Return</button>':t.status}</td>`; tbody.appendChild(tr) })}
+window.ret=async(id)=>{await returnBook(id); load()}
+load()
+</script></head><body class="bg-gray-100 min-h-screen p-6"><h1 class="text-3xl font-bold mb-6">Issue & Return</h1><table class="w-full bg-white rounded shadow"><thead class="bg-gray-200"><tr><th class="p-3">Book</th><th class="p-3">Member</th><th class="p-3">Issued</th><th class="p-3">Due</th><th class="p-3">Status</th></tr></thead><tbody id="tx"></tbody></table><a href="dashboard.html" class="mt-6 inline-block bg-indigo-600 text-white px-6 py-3 rounded">Back</a></body></html>
